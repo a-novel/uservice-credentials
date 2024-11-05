@@ -3,7 +3,7 @@ module github.com/a-novel/uservice-credentials
 go 1.23.2
 
 require (
-	buf.build/gen/go/a-novel/proto/grpc/go v1.5.1-20241104074346-b6198dbfbb79.1
+	buf.build/gen/go/a-novel/proto/grpc/go v1.5.1-20241105100003-97b1ea2903af.1
 	buf.build/gen/go/a-novel/proto/protocolbuffers/go v1.35.1-20241104074346-b6198dbfbb79.1
 	github.com/a-novel/golib v0.0.0-20241104181712-ee8524077797
 	github.com/charmbracelet/bubbles v0.20.0
