@@ -22,6 +22,7 @@ func init() {
 
 var servicesToTest = []string{
 	"create",
+	"exists",
 	"get",
 	"list",
 	"search",
@@ -65,6 +66,7 @@ func TestIntegrationCRUD(t *testing.T) {
 	defer cancel()
 
 	createCredentialsClient := credentialsv1grpc.NewCreateServiceClient(conn)
+	existsCredentialsClient := credentialsv1grpc.NewExistsServiceClient(conn)
 	getCredentialsClient := credentialsv1grpc.NewGetServiceClient(conn)
 	updateCredentialsClient := credentialsv1grpc.NewUpdateServiceClient(conn)
 
@@ -109,6 +111,20 @@ func TestIntegrationCRUD(t *testing.T) {
 	require.Equal(t, createResp.PasswordTokenId, getResp.PasswordTokenId)
 	require.Equal(t, createResp.ResetPasswordTokenId, getResp.ResetPasswordTokenId)
 	require.Equal(t, createResp.CreatedAt, getResp.CreatedAt)
+
+	// Exists credentials by email
+	existsResp, err := existsCredentialsClient.Exec(ctx, &credentialsv1.ExistsServiceExecRequest{
+		Email: "user@gmail.com",
+	})
+	require.NoError(t, err)
+	require.True(t, existsResp.Exists)
+
+	// Exists credentials by id
+	existsResp, err = existsCredentialsClient.Exec(ctx, &credentialsv1.ExistsServiceExecRequest{
+		Id: createResp.Id,
+	})
+	require.NoError(t, err)
+	require.True(t, existsResp.Exists)
 
 	// Update credentials
 	updateResp, err := updateCredentialsClient.Exec(ctx, &credentialsv1.UpdateServiceExecRequest{

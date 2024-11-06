@@ -3,9 +3,9 @@ module github.com/a-novel/uservice-credentials
 go 1.23.2
 
 require (
-	buf.build/gen/go/a-novel/proto/grpc/go v1.5.1-20241105100003-97b1ea2903af.1
-	buf.build/gen/go/a-novel/proto/protocolbuffers/go v1.35.1-20241105100003-97b1ea2903af.1
-	github.com/a-novel/golib v0.0.0-20241105215556-760d8ea3b71f
+	buf.build/gen/go/a-novel/proto/grpc/go v1.5.1-20241106113845-137cb9dfa2b6.1
+	buf.build/gen/go/a-novel/proto/protocolbuffers/go v1.35.1-20241106113845-137cb9dfa2b6.1
+	github.com/a-novel/golib v0.0.0-20241105230423-a0ff4d6377c9
 	github.com/charmbracelet/bubbles v0.20.0
 	github.com/go-playground/validator/v10 v10.22.1
 	github.com/google/uuid v1.6.0
@@ -43,7 +43,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
-	github.com/goccy/go-yaml v1.13.5 // indirect
+	github.com/goccy/go-yaml v1.13.6 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect

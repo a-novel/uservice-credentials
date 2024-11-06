@@ -28,6 +28,7 @@ import (
 var rpcServices = []grpc.ServiceDesc{
 	healthpb.Health_ServiceDesc,
 	credentialsv1grpc.CreateService_ServiceDesc,
+	credentialsv1grpc.ExistsService_ServiceDesc,
 	credentialsv1grpc.GetService_ServiceDesc,
 	credentialsv1grpc.ListService_ServiceDesc,
 	credentialsv1grpc.SearchService_ServiceDesc,
@@ -41,6 +42,7 @@ func getDepsCheck(database *bun.DB) *anovelgrpc.DepsCheck {
 		},
 		Services: anovelgrpc.DepCheckServices{
 			"create": {"postgres"},
+			"exists": {"postgres"},
 			"get":    {"postgres"},
 			"list":   {"postgres"},
 			"search": {"postgres"},
@@ -79,18 +81,21 @@ func main() {
 	grpcReporter := adapters.NewGRPC(logger)
 
 	createCredentialsDAO := dao.NewCreateCredentials(postgresDB)
+	existsCredentialsDAO := dao.NewExistsCredentials(postgresDB)
 	getCredentialsDAO := dao.NewGetCredentials(postgresDB)
 	listCredentialsDAO := dao.NewListCredentials(postgresDB)
 	searchCredentialsDAO := dao.NewSearchCredentials(postgresDB)
 	updateCredentialsDAO := dao.NewUpdateCredentials(postgresDB)
 
 	createCredentialsService := services.NewCreateCredentials(createCredentialsDAO)
+	existsCredentialsService := services.NewExistsCredentials(existsCredentialsDAO)
 	getCredentialsService := services.NewGetCredentials(getCredentialsDAO)
 	listCredentialsService := services.NewListCredentials(listCredentialsDAO)
 	searchCredentialsService := services.NewSearchCredentials(searchCredentialsDAO)
 	updateCredentialsService := services.NewUpdateCredentials(updateCredentialsDAO)
 
 	createCredentialsHandler := handlers.NewCreateCredentials(createCredentialsService, grpcReporter)
+	existsCredentialsHandler := handlers.NewExistsCredentials(existsCredentialsService, grpcReporter)
 	getCredentialsHandler := handlers.NewGetCredentials(getCredentialsService, grpcReporter)
 	listCredentialsHandler := handlers.NewListCredentials(listCredentialsService, grpcReporter)
 	searchCredentialsHandler := handlers.NewSearchCredentials(searchCredentialsService, grpcReporter)
@@ -107,6 +112,7 @@ func main() {
 	reflection.Register(server)
 	healthpb.RegisterHealthServer(server, anovelgrpc.NewHealthServer(getDepsCheck(postgresDB), time.Minute))
 	credentialsv1grpc.RegisterCreateServiceServer(server, createCredentialsHandler)
+	credentialsv1grpc.RegisterExistsServiceServer(server, existsCredentialsHandler)
 	credentialsv1grpc.RegisterGetServiceServer(server, getCredentialsHandler)
 	credentialsv1grpc.RegisterListServiceServer(server, listCredentialsHandler)
 	credentialsv1grpc.RegisterSearchServiceServer(server, searchCredentialsHandler)
